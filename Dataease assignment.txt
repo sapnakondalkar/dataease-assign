@@ -1,0 +1,37 @@
+>df=spark.read.csv("/home/hduser/startup.csv",header=True,inferSchema=True)
+>df.count()
+
+>df.printSchema()
+
+>df1=spark.read.paraquet("/home/hduser/consumerInternet.paraquet")
+
+>df1.count()
+
+>df1.printSchema()
+
+>join_df=df.union(df1)
+
+>join_df.count()
+
+
+Q1.How many startups are there in Pune City?
+
+
+>>cc1=sql_context.sql("select city,count(pune) as freq from startups group by "city")
+>>cc1.show()
+
+Q2.How many startups in Pune got their Seed/ Angel Funding?
+
+cc2=join_df.filter((join_df.city=="pune")&(join_df.InvestmentType=="seed/Angel Funding")).count()
+
+Q4.What are the top 5 Industry_Vertical which has the highest number of startups in India?
+
+
+
+cc3=join_df.filter("select Industry_Vertical,startups where Amount_in_USD=Top5").count()
+
+
+Q5.Find the top Investor(by amount) of each year.
+
+cc4=spark.sql(Investor_Name,Amount_in_USD where Investor_Name=max(Amount_in_USD))
+
